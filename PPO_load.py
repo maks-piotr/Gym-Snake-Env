@@ -1,12 +1,12 @@
-from snake import Snake
+from snake2 import Snake
 
 import os
 from stable_baselines3 import A2C, PPO
 
 models_dir = "models/PPO"
-model_path = f"{models_dir}/model_size4.zip"
+model_path = f"{models_dir}/model_size8_small.zip"
 
-env = Snake(4)
+env = Snake(8)
 model = PPO.load(model_path, env=env)
 
 #let the model play snake

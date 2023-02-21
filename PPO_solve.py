@@ -1,4 +1,4 @@
-from snake import Snake
+from snake2 import Snake
 
 import os
 from stable_baselines3 import A2C, PPO
@@ -14,12 +14,12 @@ if not os.path.exists(models_dir):
     os.makedirs(models_dir)
 
 #create a snake game of desired size
-env = Snake(5)
+env = Snake(8)
 
 #create and save a PPO model
 model = PPO(MlpPolicy, env, verbose=1,tensorboard_log=log_dir)
-model.learn(total_timesteps=500000,log_interval=1)
-model.save(f"{models_dir}/model2_size5")
+model.learn(total_timesteps=1000000,log_interval=1)
+model.save(f"{models_dir}/model2_size8_small")
 
 #let the model play snake
 obs = env.reset()

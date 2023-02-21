@@ -1,4 +1,4 @@
-from snake import Snake
+from snake2 import Snake
 env = Snake(5)
 env.reset()
 env.render()
