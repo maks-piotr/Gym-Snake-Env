@@ -114,7 +114,7 @@ class Snake(gym.Env):
             reward = -1
 
         #illegal move
-        elif (self.last_move == 0 and action == 1) or (self.last_move == 1 and action == 0) or (self.last_move == 3 and action == 2) or (self.last_move == 3 and action == 2):
+        elif (self.last_move == 0 and action == 1) or (self.last_move == 1 and action == 0) or (self.last_move == 3 and action == 2) or (self.last_move == 2 and action == 3):
             terminated = True
             reward = -1
 
