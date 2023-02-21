@@ -32,8 +32,8 @@ class Snake(gym.Env):
     0 - up, 1 - down, 2 - left, 3 - right
 
     ## Observation Space
-    Observation Space is an array of size grid_dim^2 of discrete values 0-5, symbolising different things present on the grid:
-    0 - nothing, 1 - apple, 2 - snake head, 3 - snake tail, 4 - vertical snake body, 5 - horizontal snake body.
+    Observation Space is an array of size grid_dim^2 of discrete values 0-4, symbolising different things present on the grid:
+    0 - nothing, 1 - apple, 2 - snake head, 3 - snake tail, 4 - snake body.
     The array contains the first row of the grid, then the second, etc.
 
     ## Rewards:
@@ -52,7 +52,7 @@ class Snake(gym.Env):
 
     def __init__(self, grid_dim, max_steps: Optional[int] = None, render_mode: Optional[str] = None):
         self.action_space = spaces.Discrete(4)
-        self.observation_space = spaces.MultiDiscrete([6 for _ in range(grid_dim*grid_dim)])
+        self.observation_space = spaces.MultiDiscrete([5 for _ in range(grid_dim*grid_dim)])
         self.render_mode = render_mode
         self.grid_dim = grid_dim
         self.max_steps = max_steps
@@ -81,7 +81,12 @@ class Snake(gym.Env):
         return self._get_obs()
     
     def _get_obs(self):
-            return np.array(self.grid)
+            observation = [0 for _ in range(len(self.grid))]
+            for i in range(len(self.grid)):
+                observation[i] = self.grid[i]
+                if observation[i] == 5:
+                    observation[i] = 4
+            return np.array(observation)
     
     def step(self, action):
         assert self.action_space.contains(action)
