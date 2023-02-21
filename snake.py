@@ -39,14 +39,12 @@ class Snake(gym.Env):
     ## Rewards:
     - ate an apple: +2
     - went into a wall: -1
-    - made an illegal move (360 degree turn): -1
 
     ## Episode End
     The episode ends if the following happens:
 
     1. The snake walks into it's body or the wall.
-    2. The snake makes an illegal move.
-    3. The snake made more moves than 'max_steps' (if 'max_steps' was set in the constructor).
+    2. The snake made more moves than 'max_steps' (if 'max_steps' was set in the constructor).
 
     '''
 
@@ -68,7 +66,7 @@ class Snake(gym.Env):
         self.tail_loc = center_field - 1
         self.tail_queue = queue.SimpleQueue()
         self.tail_queue.put(self.head_loc)
-        self.last_move = -1
+        self.last_move = 3
         self.apples_eaten = 0
 
 
@@ -92,29 +90,30 @@ class Snake(gym.Env):
         assert self.action_space.contains(action)
 
         self.current_step += 1
+        
+        if (self.last_move == 0 and action == 1) or (self.last_move == 1 and action == 0) or (self.last_move == 3 and action == 2) or (self.last_move == 2 and action == 3):
+            action = self.last_move
 
         if action == 0:
             new_loc = self.head_loc-self.grid_dim
             self.grid[self.head_loc] = 5
+            self.last_move = 0
         elif action == 1:
             new_loc = self.head_loc+self.grid_dim
             self.grid[self.head_loc] = 5
+            self.last_move = 1
         elif action == 2:
             new_loc = self.head_loc-1
             self.grid[self.head_loc] = 4
+            self.last_move = 2
         elif action == 3:
             new_loc = self.head_loc+1
             self.grid[self.head_loc] = 4
+            self.last_move = 3
         
 
         #snake went out of bounds
         if  new_loc < 0 or new_loc >= len(self.grid) or ((action == 2 or action == 3) and new_loc//self.grid_dim != self.head_loc//self.grid_dim):
-            #print("debug1")
-            terminated = True
-            reward = -1
-
-        #illegal move
-        elif (self.last_move == 0 and action == 1) or (self.last_move == 1 and action == 0) or (self.last_move == 3 and action == 2) or (self.last_move == 2 and action == 3):
             terminated = True
             reward = -1
 
@@ -122,7 +121,6 @@ class Snake(gym.Env):
         elif self.grid[new_loc] == 3 or self.grid[new_loc] == 4 or self.grid[new_loc] == 5:
             terminated = True
             reward = 0
-
 
         else:
             terminated = False
