@@ -1,4 +1,4 @@
-from snake2 import Snake
+from snake_small import Snake
 
 import os
 from stable_baselines3 import A2C, PPO
